@@ -15,8 +15,8 @@ if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 }
 
 // Portal motion is driven here rather than relying only on CSS animation.
-// All three worlds share one calm rhythm, with HumanTech deliberately slower
-// because its circular geometry naturally attracts more visual attention.
+// The worlds share a calm rhythm. HumanTech uses breathing rather than rotation
+// so the circular forms feel alive without becoming the visual focus.
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!reduceMotion) {
   const grid = document.querySelector('.scene-grid');
@@ -25,24 +25,33 @@ if (!reduceMotion) {
   const sun = document.querySelector('.scene-sun');
   const horizon = document.querySelector('.scene-horizon');
   const duration = 14000;
-  const humanTechDuration = 30000;
+  const humanTechDuration = 60000;
   const start = performance.now();
 
   function animatePortals(now) {
     const t = ((now - start) % duration) / duration;
     const techT = ((now - start) % humanTechDuration) / humanTechDuration;
-    const angle = t * 360;
-    const techAngle = techT * 360;
 
     if (grid) {
       const depth = 70 + (t * 34);
       grid.style.transform = `perspective(300px) rotateX(62deg) translateY(${depth}px)`;
     }
 
-    // HumanTech: ultra-slow orbital movement so the geometry feels ambient,
-    // not like a spinning graphic competing for attention.
-    if (orbitOne) orbitOne.style.transform = `rotate(${-24 + techAngle}deg)`;
-    if (orbitTwo) orbitTwo.style.transform = `rotate(${42 - techAngle}deg)`;
+    // HumanTech: no rotation. The rings subtly breathe in and out over 60 seconds.
+    const techPulse = (1 - Math.cos(techT * Math.PI * 2)) / 2;
+    const techScaleOne = 0.985 + techPulse * 0.03;
+    const techScaleTwo = 0.99 + techPulse * 0.025;
+    const techOpacityOne = 0.20 + techPulse * 0.10;
+    const techOpacityTwo = 0.17 + techPulse * 0.09;
+
+    if (orbitOne) {
+      orbitOne.style.transform = `rotate(-24deg) scale(${techScaleOne})`;
+      orbitOne.style.opacity = techOpacityOne;
+    }
+    if (orbitTwo) {
+      orbitTwo.style.transform = `rotate(42deg) scale(${techScaleTwo})`;
+      orbitTwo.style.opacity = techOpacityTwo;
+    }
 
     if (sun) {
       const pulse = (1 - Math.cos(t * Math.PI * 2)) / 2;
