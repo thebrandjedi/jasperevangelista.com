@@ -14,9 +14,8 @@ if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }, { passive: true });
 }
 
-// Portal motion is driven here rather than relying only on CSS animation.
-// The worlds share a calm rhythm. HumanTech uses breathing rather than rotation
-// so the circular forms feel alive without becoming the visual focus.
+// Calm portal motion. HumanTech breathes very slowly; Second Act keeps
+// its light safely behind the wordmark so the typography remains dominant.
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!reduceMotion) {
   const grid = document.querySelector('.scene-grid');
@@ -25,7 +24,7 @@ if (!reduceMotion) {
   const sun = document.querySelector('.scene-sun');
   const horizon = document.querySelector('.scene-horizon');
   const duration = 14000;
-  const humanTechDuration = 60000;
+  const humanTechDuration = 90000;
   const start = performance.now();
 
   function animatePortals(now) {
@@ -37,12 +36,12 @@ if (!reduceMotion) {
       grid.style.transform = `perspective(300px) rotateX(62deg) translateY(${depth}px)`;
     }
 
-    // HumanTech: no rotation. The rings subtly breathe in and out over 60 seconds.
+    // HumanTech: extremely slow breathing, not rotation.
     const techPulse = (1 - Math.cos(techT * Math.PI * 2)) / 2;
-    const techScaleOne = 0.985 + techPulse * 0.03;
-    const techScaleTwo = 0.99 + techPulse * 0.025;
-    const techOpacityOne = 0.20 + techPulse * 0.10;
-    const techOpacityTwo = 0.17 + techPulse * 0.09;
+    const techScaleOne = 0.995 + techPulse * 0.012;
+    const techScaleTwo = 0.997 + techPulse * 0.010;
+    const techOpacityOne = 0.23 + techPulse * 0.055;
+    const techOpacityTwo = 0.20 + techPulse * 0.05;
 
     if (orbitOne) {
       orbitOne.style.transform = `rotate(-24deg) scale(${techScaleOne})`;
@@ -53,16 +52,18 @@ if (!reduceMotion) {
       orbitTwo.style.opacity = techOpacityTwo;
     }
 
+    // Second Act: slow breathing orb, kept above the horizon and well away
+    // from the central AGAIN wordmark.
     if (sun) {
       const pulse = (1 - Math.cos(t * Math.PI * 2)) / 2;
-      const scale = 0.92 + pulse * 0.16;
-      const opacity = 0.72 + pulse * 0.24;
+      const scale = 0.94 + pulse * 0.10;
+      const opacity = 0.68 + pulse * 0.20;
       sun.style.transform = `scale(${scale})`;
       sun.style.opacity = opacity;
     }
 
     if (horizon) {
-      const drift = Math.sin(t * Math.PI * 2) * 8;
+      const drift = Math.sin(t * Math.PI * 2) * 5;
       horizon.style.transform = `rotate(-4deg) translateX(${drift}px)`;
     }
 
