@@ -14,8 +14,8 @@ if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }, { passive: true });
 }
 
-// Calm portal motion. HumanTech breathes very slowly; Second Act keeps
-// its light safely behind the wordmark so the typography remains dominant.
+// Portal motion language: slow, deliberate, relaxing. Movement should be
+// felt before it is noticed. Typography remains the visual protagonist.
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!reduceMotion) {
   const grid = document.querySelector('.scene-grid');
@@ -23,25 +23,27 @@ if (!reduceMotion) {
   const orbitTwo = document.querySelector('.orbit-two');
   const sun = document.querySelector('.scene-sun');
   const horizon = document.querySelector('.scene-horizon');
-  const duration = 14000;
-  const humanTechDuration = 90000;
+  const duration = 24000;
+  const humanTechDuration = 120000;
   const start = performance.now();
 
   function animatePortals(now) {
     const t = ((now - start) % duration) / duration;
     const techT = ((now - start) % humanTechDuration) / humanTechDuration;
 
+    // Brand Jedi: a very slow forward glide through the perspective grid.
     if (grid) {
-      const depth = 70 + (t * 34);
+      const eased = t * t * (3 - 2 * t);
+      const depth = 70 + (eased * 24);
       grid.style.transform = `perspective(300px) rotateX(62deg) translateY(${depth}px)`;
     }
 
-    // HumanTech: extremely slow breathing, not rotation.
+    // HumanTech: a two-minute, almost imperceptible breathing field.
     const techPulse = (1 - Math.cos(techT * Math.PI * 2)) / 2;
-    const techScaleOne = 0.995 + techPulse * 0.012;
-    const techScaleTwo = 0.997 + techPulse * 0.010;
-    const techOpacityOne = 0.23 + techPulse * 0.055;
-    const techOpacityTwo = 0.20 + techPulse * 0.05;
+    const techScaleOne = 0.998 + techPulse * 0.008;
+    const techScaleTwo = 0.999 + techPulse * 0.007;
+    const techOpacityOne = 0.20 + techPulse * 0.035;
+    const techOpacityTwo = 0.18 + techPulse * 0.03;
 
     if (orbitOne) {
       orbitOne.style.transform = `rotate(-24deg) scale(${techScaleOne})`;
@@ -52,18 +54,19 @@ if (!reduceMotion) {
       orbitTwo.style.opacity = techOpacityTwo;
     }
 
-    // Second Act: slow breathing orb, kept above the horizon and well away
-    // from the central AGAIN wordmark.
+    // Bespoke Second Act: begin quietly luminous, then diffuse downward.
+    // Keep the light well below the previous intensity so AGAIN stays dominant.
     if (sun) {
-      const pulse = (1 - Math.cos(t * Math.PI * 2)) / 2;
-      const scale = 0.94 + pulse * 0.10;
-      const opacity = 0.68 + pulse * 0.20;
+      const fade = t;
+      const easedFade = fade * fade * (3 - 2 * fade);
+      const scale = 1.005 - easedFade * 0.025;
+      const opacity = 0.22 - easedFade * 0.10;
       sun.style.transform = `scale(${scale})`;
       sun.style.opacity = opacity;
     }
 
     if (horizon) {
-      const drift = Math.sin(t * Math.PI * 2) * 5;
+      const drift = Math.sin(t * Math.PI * 2) * 3;
       horizon.style.transform = `rotate(-4deg) translateX(${drift}px)`;
     }
 
