@@ -15,7 +15,8 @@ if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 }
 
 // Portal motion is driven here rather than relying only on CSS animation.
-// All three worlds share one calm 14-second rhythm.
+// All three worlds share one calm rhythm, with HumanTech deliberately slower
+// because its circular geometry naturally attracts more visual attention.
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!reduceMotion) {
   const grid = document.querySelector('.scene-grid');
@@ -24,19 +25,24 @@ if (!reduceMotion) {
   const sun = document.querySelector('.scene-sun');
   const horizon = document.querySelector('.scene-horizon');
   const duration = 14000;
+  const humanTechDuration = 30000;
   const start = performance.now();
 
   function animatePortals(now) {
     const t = ((now - start) % duration) / duration;
+    const techT = ((now - start) % humanTechDuration) / humanTechDuration;
     const angle = t * 360;
+    const techAngle = techT * 360;
 
     if (grid) {
       const depth = 70 + (t * 34);
       grid.style.transform = `perspective(300px) rotateX(62deg) translateY(${depth}px)`;
     }
 
-    if (orbitOne) orbitOne.style.transform = `rotate(${-24 + angle}deg)`;
-    if (orbitTwo) orbitTwo.style.transform = `rotate(${42 - angle}deg)`;
+    // HumanTech: ultra-slow orbital movement so the geometry feels ambient,
+    // not like a spinning graphic competing for attention.
+    if (orbitOne) orbitOne.style.transform = `rotate(${-24 + techAngle}deg)`;
+    if (orbitTwo) orbitTwo.style.transform = `rotate(${42 - techAngle}deg)`;
 
     if (sun) {
       const pulse = (1 - Math.cos(t * Math.PI * 2)) / 2;
