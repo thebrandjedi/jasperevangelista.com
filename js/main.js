@@ -1,101 +1,71 @@
-const nav=document.querySelector('.site-nav');
-const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-document.body.classList.add('is-ready');
+const nav = document.querySelector('.site-nav');
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const compact = window.matchMedia('(max-width: 960px)');
+const clamp = (value) => Math.max(0, Math.min(1, value));
+const smooth = (value) => value * value * (3 - 2 * value);
 
-const clamp=(v,min=0,max=1)=>Math.max(min,Math.min(max,v));
-const progressThrough=(el)=>{
-  const r=el.getBoundingClientRect();
-  const vh=window.innerHeight;
-  return clamp((vh-r.top)/(vh+r.height));
-};
+// Keep the DOM and its copy intact. Motion is applied to existing text blocks.
+const moments = [...document.querySelectorAll(
+  '.hero-line, #canon h2, #worlds h2, #approach h2, .illumination, .operating-code span, #lab h2, .closing h2'
+)];
+moments.forEach((element) => element.classList.add('motion-type'));
+const scenes = [...document.querySelectorAll('.portal-scene')];
+let frame = 0;
 
-const hero=document.querySelector('.hero');
-const fragments=[...document.querySelectorAll('.fragment')];
-const canon=document.querySelector('#canon');
-const alignLine=document.querySelector('.alignment-line');
-const worlds=document.querySelector('#worlds');
-const worldTitle=document.querySelector('.worlds-section h2');
-const lab=document.querySelector('.lab-card');
-const closing=document.querySelector('.closing');
-
-function onScroll(){
-  nav?.classList.toggle('scrolled',window.scrollY>18);
-  if(reduceMotion)return;
-
-  if(hero){
-    const p=clamp(window.scrollY/(window.innerHeight*.95));
-    fragments.forEach((el,i)=>{
-      const dir=i%2===0?1:-1;
-      const x=dir*p*(7+i*1.1);
-      const y=((i%3)-1)*p*6;
-      el.style.transform=`translate3d(${x}px,${y}px,0)`;
-      el.style.opacity=String(.30-p*.11);
+function render() {
+  frame = 0;
+  nav?.classList.toggle('scrolled', window.scrollY > 18);
+  if (motionPreference.matches) return;
+  const height = window.innerHeight;
+  const distance = compact.matches ? 12 : 30;
+  // A short scroll-driven approach, then a long resting state for reading.
+  moments.forEach((element, index) => {
+    // Layout offsets exclude our own transform and avoid scroll feedback.
+    let top = -window.scrollY;
+    for (let node = element; node; node = node.offsetParent) top += node.offsetTop;
+    const arrival = smooth(clamp((height * .94 - top) / (height * .46)));
+    const remaining = 1 - arrival;
+    element.style.setProperty('--type-x', `${remaining * distance * (index % 2 ? 1 : -1)}px`);
+    element.style.setProperty('--type-y', `${remaining * distance * .55}px`);
+    element.style.setProperty('--type-scale', String(1 - remaining * .025));
+  });
+  const hero = document.querySelector('.hero');
+  const p = clamp(window.scrollY / Math.max(1, hero.offsetHeight));
+  document.querySelectorAll('.fragment').forEach((element, index) => {
+    element.style.transform = `translate3d(${(index % 2 ? -1 : 1) * p * 12}px,${p * 5}px,0)`;
+  });
+}
+function schedule() {
+  if (!frame && !document.hidden) frame = requestAnimationFrame(render);
+}
+function setSceneActivity() {
+  scenes.forEach((scene) => scene.classList.toggle('is-active',
+    scene.dataset.inView === 'true' && !document.hidden && !motionPreference.matches));
+}
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({target, isIntersecting}) => { target.dataset.inView = String(isIntersecting); });
+    setSceneActivity();
+  }, {threshold: 0});
+  scenes.forEach((scene) => observer.observe(scene));
+} else {
+  scenes.forEach((scene) => { scene.dataset.inView = 'true'; });
+}
+function updatePreference() {
+  document.body.classList.toggle('motion-enabled', !motionPreference.matches);
+  if (motionPreference.matches) {
+    moments.forEach((element) => {
+      ['--type-x', '--type-y', '--type-scale'].forEach((name) => element.style.removeProperty(name));
     });
+    document.querySelectorAll('.fragment').forEach((element) => element.style.removeProperty('transform'));
   }
-
-  if(canon){
-    const p=progressThrough(canon);
-    canon.style.setProperty('--canon-line',String(clamp((p-.18)*1.45)));
-    alignLine?.style.setProperty('--align-shift',`${(p-.5)*18}px`);
-  }
-
-  if(worlds&&worldTitle){
-    const p=progressThrough(worlds);
-    worldTitle.style.setProperty('--world-title-shift',`${(p-.5)*-26}px`);
-  }
-
-  if(lab){
-    const p=progressThrough(lab);
-    lab.style.setProperty('--lab-x',`${(p-.5)*28}px`);
-    lab.style.setProperty('--lab-y',`${Math.sin(p*Math.PI)*-18}px`);
-  }
-
-  if(closing){
-    const p=progressThrough(closing);
-    closing.style.setProperty('--close-line',String(clamp((p-.2)*1.55)));
-    closing.style.setProperty('--close-shift',`${(p-.5)*-34}px`);
-  }
+  setSceneActivity();
+  schedule();
 }
-
-window.addEventListener('scroll',onScroll,{passive:true});
-onScroll();
-
-if(!reduceMotion){
-  const grid=document.querySelector('.scene-grid');
-  const orbitOne=document.querySelector('.orbit-one');
-  const orbitTwo=document.querySelector('.orbit-two');
-  const sun=document.querySelector('.scene-sun');
-  const horizon=document.querySelector('.scene-horizon');
-  const start=performance.now();
-
-  function animate(now){
-    const slow=((now-start)%52000)/52000;
-    const tech=((now-start)%120000)/120000;
-    const eased=slow*slow*(3-2*slow);
-    const pulse=(1-Math.cos(tech*Math.PI*2))/2;
-
-    if(grid){
-      const depth=72+eased*20;
-      const side=Math.sin(slow*Math.PI*2)*2.5;
-      grid.style.transform=`perspective(320px) rotateX(63deg) translate3d(${side}px,${depth}px,0)`;
-    }
-    if(orbitOne){
-      orbitOne.style.transform=`rotate(-24deg) scale(${.996+pulse*.01})`;
-      orbitOne.style.opacity=.21+pulse*.035;
-    }
-    if(orbitTwo){
-      orbitTwo.style.transform=`rotate(42deg) scale(${.997+pulse*.009})`;
-      orbitTwo.style.opacity=.17+pulse*.032;
-    }
-    if(sun){
-      const glow=(1-Math.cos(slow*Math.PI*2))/2;
-      sun.style.transform=`translateY(${glow*7}px) scale(${1.006-glow*.025})`;
-      sun.style.opacity=.20-glow*.075;
-    }
-    if(horizon){
-      horizon.style.transform=`rotate(-4deg) translateX(${Math.sin(slow*Math.PI*2)*3}px)`;
-    }
-    requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-}
+window.addEventListener('scroll', schedule, {passive: true});
+window.addEventListener('resize', schedule, {passive: true});
+window.addEventListener('pageshow', schedule);
+document.addEventListener('visibilitychange', () => { setSceneActivity(); schedule(); });
+motionPreference.addEventListener('change', updatePreference);
+updatePreference();
+document.body.classList.add('is-ready');

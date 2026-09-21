@@ -12,3 +12,57 @@
 .closing{min-height:95svh;display:flex;align-items:center;overflow:hidden}.closing:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line);transform:scaleX(var(--close-line,0));transform-origin:center}.closing-inner{width:100%}.operating-close{margin:0 0 100px;max-width:560px;color:#5d5850;font-size:clamp(1.1rem,1.7vw,1.5rem);line-height:1.65}.closing h2{margin:0;font-size:clamp(5.5rem,13.5vw,13rem);line-height:.8;white-space:nowrap;transform:translateX(var(--close-shift,0px));will-change:transform}.site-footer{display:flex;justify-content:space-between;gap:20px;padding:38px 5vw;border-top:1px solid var(--line);color:var(--muted);font-size:.68rem}.site-footer a{text-decoration:none}
 @media(max-width:960px){.site-nav{padding:18px 5vw}.site-nav nav{display:none}.hero{padding:120px 6vw 85px}.hero h1{font-size:clamp(4.1rem,16vw,7rem)}.hero-line.indent{padding-left:5vw}.hero-zero-copy,.split,.stance-inner,.thought-grid,.lab-card{grid-template-columns:1fr;gap:42px}.hero-zero-copy{margin-left:0}.hero .pill{margin-left:0}.section{padding:100px 6vw}.canon .split>div:first-child,.stance-inner>div:first-child,.jasper-section .split>div:first-child,.section-library .split>div:first-child,.thought-grid>div:first-child{position:relative;top:auto}.worlds-section h2{white-space:normal}.world-portal,.world-portal:nth-child(even){grid-template-columns:1fr}.world-portal:nth-child(even) .portal-scene{order:0}.portal-scene{min-height:280px;transform:none}.portal-copy{padding:38px 0 55px}.quiet-proof,.operating-code{grid-template-columns:1fr}.quiet-proof span+span{border-left:0;border-top:1px solid var(--line);padding:14px 0 0}.lab-card{padding:58px 36px;min-height:0}.closing{min-height:70svh}.closing h2{white-space:normal}.site-footer{padding:34px 6vw;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.reveal-delay{opacity:1;transform:none}.worlds-section h2,.alignment-line,.closing h2,.lab-card:before,.lab-card:after{transform:none!important}}
+
+/* V3 motion: arrive, align, rest. Copy remains readable without JavaScript. */
+.reveal,.reveal-delay{opacity:1;transform:none}
+.motion-enabled .motion-type{transform:translate3d(var(--type-x,0px),var(--type-y,0px),0) scale(var(--type-scale,1));transform-origin:left center}
+.worlds-section h2{font-size:clamp(3rem,6.3vw,6rem);white-space:normal;max-width:100%;will-change:auto}
+.closing h2{font-size:clamp(4rem,11vw,10rem);white-space:normal;will-change:auto}
+.canon{overflow:clip}.canon:after{display:none}
+.alignment-line{transform:none}.closing:before{transform:none;opacity:.45}
+.section{scroll-margin-top:76px}
+.portal-scene .scene-grid{animation:grid-glide 32s linear infinite}
+.portal-scene .orbit-one{animation:orbit-breathe-one 72s ease-in-out infinite}
+.portal-scene .orbit-two{animation:orbit-breathe-two 88s ease-in-out infinite}
+.portal-scene .scene-sun{animation:sun-drift 26s ease-in-out infinite}
+.portal-scene .scene-horizon{animation:horizon-drift 34s ease-in-out infinite}
+.portal-scene .scene-grid,.portal-scene .scene-orbit,.portal-scene .scene-sun,.portal-scene .scene-horizon{animation-play-state:paused}
+.portal-scene.is-active .scene-grid,.portal-scene.is-active .scene-orbit,.portal-scene.is-active .scene-sun,.portal-scene.is-active .scene-horizon{animation-play-state:running}
+.scene-orbit{opacity:.85}.scene-sun{opacity:.78}
+@keyframes grid-glide{from{background-position:0 0,0 0}to{background-position:0 34px,0 34px}}
+@keyframes orbit-breathe-one{0%,100%{transform:rotate(-24deg) scale(.99)}50%{transform:rotate(-14deg) scale(1.025)}}
+@keyframes orbit-breathe-two{0%,100%{transform:rotate(42deg) scale(1.01)}50%{transform:rotate(34deg) scale(.98)}}
+@keyframes sun-drift{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.78}50%{transform:translate3d(-5px,10px,0) scale(.97);opacity:.66}}
+@keyframes horizon-drift{0%,100%{transform:rotate(-4deg) translate3d(-4px,0,0)}50%{transform:rotate(-4deg) translate3d(5px,-3px,0)}}
+.portal-copy h3,.doorway-link{transition:transform .65s cubic-bezier(.2,.75,.2,1)}
+.text-link span{display:inline-block;transition:transform .4s ease}
+@media(hover:hover) and (pointer:fine){
+  .world-portal:hover .portal-copy h3{transform:translateX(6px)}
+  .world-portal:hover .doorway-link{transform:translateX(9px)}
+  .text-link:hover span{transform:translateY(3px)}
+}
+a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+.library-shelves a:focus-visible:before{width:100%}
+.library-shelves a:focus-visible>*{color:var(--paper)}
+.world-portal:focus-visible .portal-scene{transform:scale(1)}
+@media(max-width:960px){
+  .section h2{font-size:clamp(2.9rem,10vw,5.7rem)}
+  .worlds-section h2{font-size:clamp(2.7rem,9vw,5.4rem)}
+  .closing h2{font-size:clamp(3.5rem,12vw,7rem)}
+  .hero h1{font-size:clamp(3rem,14vw,7rem)}
+  .library-shelves a{grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:24px 4px}
+  .library-shelves a>span{grid-column:1 / -1}
+  .library-shelves a:hover>*{transform:none}
+  .territory-close{gap:18px;flex-wrap:wrap}
+  .portal-copy h3{font-size:clamp(2.5rem,9vw,4rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .motion-type,.fragment{transform:none!important}
+  .world-portal:hover .portal-scene{transform:none}
+  .portal-copy h3,.doorway-link,.library-shelves a>*,.text-link span,.pill{transform:none!important}
+}
+
+/* Keep long editorial words within the desktop split column. */
+.stance-section h2{font-size:clamp(3.4rem,6.4vw,7rem)}
+@media(max-width:960px){.stance-section h2{font-size:clamp(2.9rem,10vw,5.7rem)}}
