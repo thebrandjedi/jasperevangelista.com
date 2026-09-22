@@ -216,3 +216,13 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 .book-links>a b{font-size:.8rem}
 @media(hover:hover) and (pointer:fine){.book-links>a:hover{background:var(--ink);color:var(--paper);padding-left:25px}}
 @media(max-width:960px){.library-book-row{grid-template-columns:1fr}.book-links{grid-template-columns:1fr}.book-links>a{border-left:0;border-top:1px solid var(--line);padding:14px 0}.book-links>a:hover{padding-left:0}}
+
+
+/* Link reliability: decorative shelf layers must never intercept pointer input. */
+.library-shelves a{cursor:pointer;isolation:isolate;z-index:2}
+.library-shelves a:before{pointer-events:none!important;z-index:-1}
+.library-shelves a>*{pointer-events:none}
+.library-book-row .book-links{position:relative;z-index:5;pointer-events:auto}
+.library-book-row .book-links>a{position:relative;z-index:6;pointer-events:auto!important;cursor:pointer;isolation:isolate}
+.library-book-row .book-links>a:before{display:none!important}
+.library-book-row .book-links>a>*{pointer-events:none}
