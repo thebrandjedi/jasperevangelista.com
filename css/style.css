@@ -88,3 +88,40 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
  .alignment-line span{transform:none!important}
  .alignment-line:after{transform:none!important}
 }
+
+
+/* First-half choreography: words perform their meaning. */
+.hero{isolation:isolate}
+.hero-inner{transition:transform .1s linear,opacity .1s linear}
+.hero-line{will-change:transform}
+.canon-line{display:inline-block}
+.meaning-move,.meaning-drift{display:inline-block;will-change:transform}
+.fragment-lines{margin:46px 0;display:grid;gap:0;color:#24211e;font-size:clamp(1.28rem,2vw,1.8rem);line-height:1.25;font-weight:500;letter-spacing:-.025em}
+.fragment-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);overflow:visible}
+.fragment-pair:first-child{border-top:1px solid var(--line)}
+.fragment-pair span{display:block;will-change:transform}
+.fragment-pair span:last-child{transform:translateX(var(--fragment-gap,0px));color:#6c675f}
+.worlds-section h2>span{display:inline-block;will-change:transform}
+.world-portals{position:relative}
+.portal-scene{will-change:transform}
+.portal-brand .scene-grid{animation:grid-glide 24s linear infinite}
+.portal-tech .orbit-one{animation:orbit-breathe-one 120s ease-in-out -30s infinite}
+.portal-tech .orbit-two{animation:orbit-breathe-two 120s ease-in-out -60s infinite}
+.portal-self .scene-sun{animation:sun-drift 24s ease-in-out -6s infinite}
+.portal-self .scene-horizon{animation:horizon-drift 24s ease-in-out -6s infinite}
+.world-portal{transition:background .55s ease}
+.world-portal:hover{background:rgba(255,255,255,.16)}
+.stance-section h2,.stance-section .eyebrow,.stance-section .big-copy,.stance-section .copy,.stance-section .illumination{transform:none!important}
+.stance-section h2{will-change:auto}
+@media(min-width:961px){
+  .world-portal{min-height:520px}
+  .portal-scene{min-height:520px}
+  .portal-copy{padding-top:72px;padding-bottom:72px}
+}
+@media(max-width:960px){
+  .fragment-pair{grid-template-columns:.9fr 1.35fr;gap:16px}
+  .fragment-pair span:last-child{transform:translateX(calc(var(--fragment-gap,0px) * .35))}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-inner,.meaning-move,.meaning-drift,.fragment-pair span,.worlds-section h2>span{transform:none!important;opacity:1!important}
+}
