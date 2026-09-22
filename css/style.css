@@ -138,3 +138,59 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
   100%{margin-left:-5px;margin-top:6px;opacity:.24}
 }
 @media(prefers-reduced-motion:reduce){.fragment{animation:none!important;margin:0!important}}
+
+
+/* Second act: person -> proof -> work -> play -> conversation -> zero. */
+.jasper-section .split>div:last-child>.copy,.jasper-section .split>div:last-child>.big-copy,.experience-line{transition:opacity .55s ease,transform .55s ease}
+.motion-enabled .jasper-section .story-soft{opacity:.34;transform:translateY(-3px)}
+.motion-enabled .jasper-section .story-focus{opacity:1;transform:none}
+.steel-line{display:inline-block;position:relative;padding-bottom:5px}
+.steel-line:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(var(--steel,0));transform-origin:left}
+.steel-line:before{content:"";position:absolute;left:52%;bottom:-9px;width:1px;height:18px;background:var(--ink);transform:scaleY(var(--steel,0));transform-origin:center}
+.range-lines{display:grid;gap:3px}
+.range-lines span{display:block;transform:translateX(var(--range-x,0px));transition:transform .1s linear}
+.experience-line{padding-top:34px;border-top:1px solid var(--line)}
+.operating-code span{transform:translateY(var(--code-y,0px));opacity:var(--code-o,1);transition:transform .1s linear,opacity .1s linear}
+
+/* Library behaves like a shelf: selected object advances, label counters. */
+.library-shelves a{overflow:hidden}
+.library-shelves a strong{transition:color .35s,transform .45s cubic-bezier(.2,.75,.2,1)}
+.library-shelves a span{transition:color .35s,transform .45s cubic-bezier(.2,.75,.2,1)}
+@media(hover:hover) and (pointer:fine){
+ .library-shelves a:hover strong{transform:translateX(18px)}
+ .library-shelves a:hover span{transform:translateX(-4px)}
+ .library-shelves a:hover b{transform:translateX(-10px)}
+}
+
+/* The Lab is allowed to misbehave, quietly. */
+.lab-card>div:not(.lab-field){position:relative;z-index:2}
+.lab-field{position:absolute!important;inset:0;z-index:1;pointer-events:none}
+.lab-field i{position:absolute;width:4px;height:4px;background:rgba(243,240,232,.36);border-radius:50%;animation:lab-drift 28s ease-in-out infinite alternate}
+.lab-field i:after{content:"";position:absolute;left:12px;top:1px;width:42px;height:1px;background:rgba(243,240,232,.12)}
+.lab-field i:nth-child(1){left:8%;top:18%;animation-duration:31s}
+.lab-field i:nth-child(2){left:34%;top:70%;animation-duration:39s;animation-delay:-12s}
+.lab-field i:nth-child(3){right:13%;top:22%;animation-duration:35s;animation-delay:-5s}
+.lab-field i:nth-child(4){right:29%;bottom:12%;animation-duration:44s;animation-delay:-18s}
+.lab-field i:nth-child(5){left:18%;bottom:25%;animation-duration:37s;animation-delay:-8s}
+.lab-field i:nth-child(6){right:8%;top:56%;animation-duration:42s;animation-delay:-20s}
+@keyframes lab-drift{0%{transform:translate3d(-7px,5px,0)}50%{transform:translate3d(13px,-11px,0)}100%{transform:translate3d(-3px,15px,0)}}
+.lab-card:before{border-radius:0;width:88px;height:88px;left:9%;top:24%;border-right:0;border-bottom:0;transform:translate(var(--lab-x,0px),var(--lab-y,0px)) rotate(4deg)}
+.lab-card:after{width:7px;height:7px;right:18%;bottom:18%;border-radius:50%;background:rgba(243,240,232,.18);transform:translate(calc(var(--lab-x,0px)*-.5),calc(var(--lab-y,0px)*-.5))}
+
+/* Conversation is the visual in Send a Thought. */
+.thought-prompts span{opacity:.62;transform:translateX(0);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.75,.2,1),padding .25s,background .25s}
+.thought-prompts span em{font-style:normal;display:inline-block;letter-spacing:.08em;transform-origin:left;transition:transform .45s ease,letter-spacing .45s ease}
+@media(hover:hover) and (pointer:fine){
+ .thought-prompts:hover span{opacity:.3}
+ .thought-prompts span:hover{opacity:1;transform:translateX(10px);padding-left:0;background:transparent}
+ .thought-prompts span:hover em{transform:scaleX(1.12);letter-spacing:.12em}
+}
+
+/* Return to Zero: motion is nearly imperceptible. */
+.closing h2{transform:translate3d(var(--final-zero-x,0px),0,0);transition:transform .15s linear}
+.closing .operating-close{opacity:var(--closing-copy-o,1);transform:translateY(var(--closing-copy-y,0px))}
+@media(prefers-reduced-motion:reduce){
+ .jasper-section .story-soft,.jasper-section .story-focus,.range-lines span,.operating-code span,.closing h2,.closing .operating-close{opacity:1!important;transform:none!important}
+ .steel-line:after,.steel-line:before{transform:none!important}
+ .lab-field i{animation:none!important}
+}
