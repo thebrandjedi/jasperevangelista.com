@@ -10,6 +10,7 @@ const moments = [...document.querySelectorAll(
 )];
 moments.forEach((element) => element.classList.add('motion-type'));
 const scenes = [...document.querySelectorAll('.portal-scene')];
+const alignment = document.querySelector('.alignment-line');
 let frame = 0;
 
 function render() {
@@ -18,6 +19,12 @@ function render() {
   if (motionPreference.matches) return;
   const height = window.innerHeight;
   const distance = compact.matches ? 12 : 30;
+  if (alignment) {
+    // Resolve the existing fragments before the territories enter the viewport.
+    const top = alignment.getBoundingClientRect().top;
+    const progress = smooth(clamp((height * .9 - top) / (height * .42)));
+    alignment.style.setProperty('--alignment-rest', String(1 - progress));
+  }
   // A short scroll-driven approach, then a long resting state for reading.
   moments.forEach((element, index) => {
     // Layout offsets exclude our own transform and avoid scroll feedback.
@@ -54,6 +61,7 @@ if ('IntersectionObserver' in window) {
 function updatePreference() {
   document.body.classList.toggle('motion-enabled', !motionPreference.matches);
   if (motionPreference.matches) {
+    alignment?.style.removeProperty('--alignment-rest');
     moments.forEach((element) => {
       ['--type-x', '--type-y', '--type-scale'].forEach((name) => element.style.removeProperty(name));
     });

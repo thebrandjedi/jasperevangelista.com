@@ -21,19 +21,19 @@
 .canon{overflow:clip}.canon:after{display:none}
 .alignment-line{transform:none}.closing:before{transform:none;opacity:.45}
 .section{scroll-margin-top:76px}
-.portal-scene .scene-grid{animation:grid-glide 32s linear infinite}
-.portal-scene .orbit-one{animation:orbit-breathe-one 72s ease-in-out infinite}
-.portal-scene .orbit-two{animation:orbit-breathe-two 88s ease-in-out infinite}
-.portal-scene .scene-sun{animation:sun-drift 26s ease-in-out infinite}
-.portal-scene .scene-horizon{animation:horizon-drift 34s ease-in-out infinite}
+.portal-scene .scene-grid{animation:grid-glide 14s linear infinite}
+.portal-scene .orbit-one{animation:orbit-breathe-one 24s ease-in-out -6s infinite}
+.portal-scene .orbit-two{animation:orbit-breathe-two 30s ease-in-out -9s infinite}
+.portal-scene .scene-sun{animation:sun-drift 18s ease-in-out -4.5s infinite}
+.portal-scene .scene-horizon{animation:horizon-drift 24s ease-in-out -6s infinite}
 .portal-scene .scene-grid,.portal-scene .scene-orbit,.portal-scene .scene-sun,.portal-scene .scene-horizon{animation-play-state:paused}
 .portal-scene.is-active .scene-grid,.portal-scene.is-active .scene-orbit,.portal-scene.is-active .scene-sun,.portal-scene.is-active .scene-horizon{animation-play-state:running}
 .scene-orbit{opacity:.85}.scene-sun{opacity:.78}
 @keyframes grid-glide{from{background-position:0 0,0 0}to{background-position:0 34px,0 34px}}
-@keyframes orbit-breathe-one{0%,100%{transform:rotate(-24deg) scale(.99)}50%{transform:rotate(-14deg) scale(1.025)}}
-@keyframes orbit-breathe-two{0%,100%{transform:rotate(42deg) scale(1.01)}50%{transform:rotate(34deg) scale(.98)}}
-@keyframes sun-drift{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.78}50%{transform:translate3d(-5px,10px,0) scale(.97);opacity:.66}}
-@keyframes horizon-drift{0%,100%{transform:rotate(-4deg) translate3d(-4px,0,0)}50%{transform:rotate(-4deg) translate3d(5px,-3px,0)}}
+@keyframes orbit-breathe-one{0%,100%{transform:rotate(-24deg) scale(.99)}50%{transform:rotate(-8deg) scale(1.035)}}
+@keyframes orbit-breathe-two{0%,100%{transform:rotate(42deg) scale(1.01)}50%{transform:rotate(28deg) scale(.975)}}
+@keyframes sun-drift{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.78}50%{transform:translate3d(-8px,18px,0) scale(.96);opacity:.66}}
+@keyframes horizon-drift{0%,100%{transform:rotate(-4deg) translate3d(-4px,0,0)}50%{transform:rotate(-4deg) translate3d(10px,-5px,0)}}
 .portal-copy h3,.doorway-link{transition:transform .65s cubic-bezier(.2,.75,.2,1)}
 .text-link span{display:inline-block;transition:transform .4s ease}
 @media(hover:hover) and (pointer:fine){
@@ -66,3 +66,25 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 /* Keep long editorial words within the desktop split column. */
 .stance-section h2{font-size:clamp(3.4rem,6.4vw,7rem)}
 @media(max-width:960px){.stance-section h2{font-size:clamp(2.9rem,10vw,5.7rem)}}
+
+/* One shared visual thread: drift resolves before the three territories. */
+.alignment-line{position:relative;gap:0;--alignment-rest:0}
+.alignment-line span{transform-origin:center;transform:translateY(calc(var(--fragment-offset) * var(--alignment-rest))) rotate(calc(var(--fragment-angle) * var(--alignment-rest)));transition:none}
+.alignment-line span:nth-child(1){--fragment-offset:-22px;--fragment-angle:-5deg}
+.alignment-line span:nth-child(2){--fragment-offset:14px;--fragment-angle:3deg}
+.alignment-line span:nth-child(3){--fragment-offset:-10px;--fragment-angle:-2deg}
+.alignment-line span:nth-child(4){--fragment-offset:24px;--fragment-angle:4deg}
+.alignment-line span:nth-child(5){--fragment-offset:-16px;--fragment-angle:-3deg}
+.alignment-line:after{content:"";position:absolute;top:0;left:50%;height:64px;width:1px;background:var(--line);transform:scaleY(calc(1 - var(--alignment-rest)));transform-origin:top}
+.worlds-section .eyebrow:before{content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--muted);box-shadow:12px 0 var(--muted),24px 0 var(--muted);margin-bottom:20px}
+.portal-number{display:flex;align-items:center;gap:8px}
+.portal-number:before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor}
+@media(max-width:960px){
+ .alignment-line{margin-top:84px}
+ .alignment-line span{transform:translateY(calc(var(--fragment-offset) * var(--alignment-rest) * .6)) rotate(calc(var(--fragment-angle) * var(--alignment-rest)))}
+ .alignment-line:after{height:42px}
+}
+@media(prefers-reduced-motion:reduce){
+ .alignment-line span{transform:none!important}
+ .alignment-line:after{transform:none!important}
+}
