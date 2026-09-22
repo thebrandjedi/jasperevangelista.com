@@ -42,6 +42,48 @@ function render(){
     });
   }
 
+  const jasper=document.querySelector('#jasper');
+  if(jasper){
+    const beats=[...jasper.querySelectorAll('.split>div:last-child>.big-copy,.split>div:last-child>.copy,.experience-line')];
+    let best=null,bestDist=Infinity;
+    beats.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      const d=Math.abs(r.top-innerHeight*.43);
+      if(d<bestDist){best=el;bestDist=d}
+      el.classList.remove('story-focus','story-soft');
+    });
+    beats.forEach(el=>el.classList.add(el===best?'story-focus':'story-soft'));
+    const jp=progress(jasper,.92,.28);
+    const steel=jasper.querySelector('.steel-line');
+    if(steel)steel.style.setProperty('--steel',String(clamp(jp*2.1)));
+    jasper.querySelectorAll('.range-lines span').forEach((el,i)=>{
+      el.style.setProperty('--range-x',`${(1-clamp(jp*1.45-.18))*([10,-7,13,-5][i])}px`);
+    });
+    jasper.querySelectorAll('.operating-code span').forEach((el,i)=>{
+      const q=clamp(jp*1.65-.42-i*.08);
+      el.style.setProperty('--code-y',`${(1-q)*12}px`);
+      el.style.setProperty('--code-o',String(.38+q*.62));
+    });
+  }
+
+  const lab=document.querySelector('#lab');
+  if(lab){
+    const lp=progress(lab,.95,.25);
+    const card=lab.querySelector('.lab-card');
+    if(card){
+      card.style.setProperty('--lab-x',`${(lp-.5)*18}px`);
+      card.style.setProperty('--lab-y',`${(.5-lp)*10}px`);
+    }
+  }
+
+  const closing=document.querySelector('.closing');
+  if(closing){
+    const cp=progress(closing,.9,.28);
+    closing.style.setProperty('--final-zero-x',`${(cp-.5)*2}px`);
+    closing.style.setProperty('--closing-copy-o',String(.55+cp*.45));
+    closing.style.setProperty('--closing-copy-y',`${(1-cp)*8}px`);
+  }
+
   const worlds=document.querySelector('#worlds');
   if(worlds){
     const p=progress(worlds,.92,.36);
@@ -63,7 +105,7 @@ if('IntersectionObserver'in window){
 function reset(){
   document.body.classList.toggle('motion-enabled',!reduce.matches);
   if(reduce.matches){
-    document.querySelectorAll('.fragment,.meaning-move,.meaning-drift,.fragment-pair span,#worlds h2>span,.hero-inner').forEach(el=>{el.style.transform='';el.style.opacity='';});
+    document.querySelectorAll('.fragment,.meaning-move,.meaning-drift,.fragment-pair span,#worlds h2>span,.hero-inner,.range-lines span,.operating-code span,.closing h2,.closing .operating-close').forEach(el=>{el.style.transform='';el.style.opacity='';});
   }
   schedule();
 }
