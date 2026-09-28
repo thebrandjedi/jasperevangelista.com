@@ -21,11 +21,7 @@ function render(){
     const p=clamp((h*.72-r.top)/(Math.max(1,r.height-h*.25)));
     const drift=document.querySelector('.meaning-drift');
     if(drift)drift.style.transform=`translate3d(${p*48}px,${p*2}px,0)`;
-    const separation=Math.sin(Math.min(1,p)*Math.PI)*38;
-    document.querySelectorAll('.fragment-pair').forEach((row,i)=>{
-      const right=row.lastElementChild;
-      if(right)right.style.setProperty('--fragment-gap',`${separation*(.65+i*.16)}px`);
-    });
+
   }
 
   const jasper=document.querySelector('#jasper');
@@ -102,3 +98,22 @@ document.addEventListener('visibilitychange',()=>{scenes.forEach(s=>s.classList.
 reduce.addEventListener('change',reset);
 document.body.classList.add('is-ready');
 reset();
+
+// Enter once, drift with time, and return to the origin only after leaving.
+const driftSection=document.querySelector('#canon');
+if(driftSection){
+  if('IntersectionObserver' in window){
+    const driftObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>entry.target.classList.toggle('drift-in-view',entry.isIntersecting));
+    },{threshold:0,rootMargin:'-64px 0px 0px 0px'});
+    driftObserver.observe(driftSection);
+  }else{
+    const syncDriftVisibility=()=>{
+      const bounds=driftSection.getBoundingClientRect();
+      driftSection.classList.toggle('drift-in-view',bounds.bottom>64&&bounds.top<innerHeight);
+    };
+    addEventListener('scroll',syncDriftVisibility,{passive:true});
+    addEventListener('resize',syncDriftVisibility,{passive:true});
+    syncDriftVisibility();
+  }
+}

@@ -100,7 +100,7 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 .fragment-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);overflow:visible}
 .fragment-pair:first-child{border-top:1px solid var(--line)}
 .fragment-pair span{display:block;will-change:transform}
-.fragment-pair span:last-child{transform:translateX(var(--fragment-gap,0px));color:#6c675f}
+.fragment-pair span:last-child{transform:translate3d(0,0,0);color:#6c675f}
 .worlds-section h2>span{display:inline-block;will-change:transform}
 .world-portals{position:relative}
 .portal-scene{will-change:transform}
@@ -120,7 +120,6 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 }
 @media(max-width:960px){
   .fragment-pair{grid-template-columns:.9fr 1.35fr;gap:16px}
-  .fragment-pair span:last-child{transform:translateX(calc(var(--fragment-gap,0px) * .35))}
 }
 @media(prefers-reduced-motion:reduce){
   .hero-inner,.meaning-move,.meaning-drift,.fragment-pair span,.worlds-section h2>span{transform:none!important;opacity:1!important}
@@ -269,3 +268,11 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 
 /* The expanded statement must remain fully reachable on shorter screens. */
 .canon .split>div:first-child{position:relative;top:auto}
+
+/* A single gentle rightward pass, independent of scroll speed or direction. */
+.canon.drift-in-view .fragment-pair span:last-child{animation:row-drift 18s ease-in-out both}
+@keyframes row-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(12px,0,0)}}
+@media(max-width:600px){
+ @keyframes row-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(6px,0,0)}}
+}
+@media(prefers-reduced-motion:reduce){.canon .fragment-pair span:last-child{animation:none!important;transform:none!important}}
