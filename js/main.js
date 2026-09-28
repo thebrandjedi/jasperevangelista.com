@@ -15,18 +15,6 @@ function render(){
   raf=0;
   nav?.classList.toggle('scrolled',scrollY>18);
   if(reduce.matches)return;
-  const hero=document.querySelector('.hero');
-  const heroInner=document.querySelector('.hero-inner');
-  if(hero&&heroInner){
-    const hp=clamp(scrollY/(hero.offsetHeight*.72));
-    heroInner.style.transform=`translate3d(0,${-hp*18}px,0)`;
-    heroInner.style.opacity=String(1-hp*.16);
-    document.querySelectorAll('.fragment').forEach((el,i)=>{
-      const dir=i%2?1:-1;
-      el.style.transform=`translate3d(${dir*hp*(8+i*1.5)}px,${hp*(3+(i%3)*2)}px,0)`;
-    });
-  }
-
   const canon=document.querySelector('#canon');
   if(canon){
     const r=canon.getBoundingClientRect(),h=innerHeight;

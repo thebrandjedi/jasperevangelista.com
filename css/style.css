@@ -92,7 +92,7 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 
 /* First-half choreography: words perform their meaning. */
 .hero{isolation:isolate}
-.hero-inner{transition:transform .1s linear,opacity .1s linear}
+.hero-inner{transform:none}
 .hero-line{will-change:transform}
 .canon-line{display:inline-block}
 .meaning-move,.meaning-drift{display:inline-block;will-change:transform}
@@ -127,16 +127,20 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 }
 
 
-/* Independent ambient drift composes with the scroll-linked transform. */
-.fragment{animation:ambient-fragment 22s ease-in-out -5s infinite;--drift-x:10px;--drift-y:-7px;will-change:transform,translate}
-.fragment:nth-child(2n){--drift-x:-9px;--drift-y:8px;animation-duration:27s;animation-delay:-12s}
-.fragment:nth-child(3n){--drift-x:7px;--drift-y:10px;animation-duration:25s;animation-delay:-18s}
-.fragment:nth-child(4n){--drift-x:-11px;--drift-y:-6px;animation-duration:30s;animation-delay:-9s}
-@keyframes ambient-fragment{
-  0%,100%{translate:calc(var(--drift-x) * -1) calc(var(--drift-y) * -1)}
-  50%{translate:var(--drift-x) var(--drift-y)}
+/* One compositor animation per hero word: horizontal drift only. */
+.fragment{--drift-x:12px;animation:hero-horizontal 32s ease-in-out -6s infinite;will-change:transform}
+.fragment:nth-child(2n){--drift-x:-10px;animation-duration:38s;animation-delay:-9s}
+.fragment:nth-child(3n){--drift-x:9px;animation-duration:36s;animation-delay:-13s}
+.fragment:nth-child(4n){--drift-x:-12px;animation-duration:42s;animation-delay:-11s}
+.hero-line{--drift-x:6px;animation:hero-horizontal 36s ease-in-out -9s infinite;will-change:transform}
+.hero-line.indent{--drift-x:-6px;animation-duration:40s;animation-delay:-10s}
+@keyframes hero-horizontal{
+  0%,100%{transform:translate3d(calc(var(--drift-x) * -1),0,0)}
+  50%{transform:translate3d(var(--drift-x),0,0)}
 }
-@media(prefers-reduced-motion:reduce){.fragment{animation:none!important;translate:none!important}}
+@media(max-width:600px){.hero-line{--drift-x:3px}.hero-line.indent{--drift-x:-3px}}
+@media(prefers-reduced-motion:reduce){.fragment,.hero-line{animation:none!important;transform:none!important}}
+
 
 
 
