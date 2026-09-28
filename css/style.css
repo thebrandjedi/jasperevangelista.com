@@ -127,19 +127,24 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 }
 
 
-/* One compositor animation per hero word: horizontal drift only. */
-.fragment{--drift-x:12px;animation:hero-horizontal 32s ease-in-out -6s infinite;will-change:transform}
-.fragment:nth-child(2n){--drift-x:-10px;animation-duration:38s;animation-delay:-9s}
-.fragment:nth-child(3n){--drift-x:9px;animation-duration:36s;animation-delay:-13s}
-.fragment:nth-child(4n){--drift-x:-12px;animation-duration:42s;animation-delay:-11s}
-.hero-line{--drift-x:6px;animation:hero-horizontal 36s ease-in-out -9s infinite;will-change:transform}
-.hero-line.indent{--drift-x:-6px;animation-duration:40s;animation-delay:-10s}
+/* Shared pace: the opening word sets the rhythm; Zero remains anchored. */
+.fragment,.hero-line:not(.indent),.hero-drift{--drift-x:6px;animation:hero-horizontal 36s ease-in-out -9s infinite;will-change:transform}
+.fragment:nth-child(2n),.hero-your{--drift-x:-6px}
+.fragment:nth-child(3n){animation-delay:-12s}
+.fragment:nth-child(4n){animation-delay:-6s}
+.hero-line.indent{animation:none;transform:none;will-change:auto}
+.hero-drift{display:inline-block}
+.hero-zero{display:inline-block}
+.hero-question{margin-left:.05em}
 @keyframes hero-horizontal{
   0%,100%{transform:translate3d(calc(var(--drift-x) * -1),0,0)}
   50%{transform:translate3d(var(--drift-x),0,0)}
 }
-@media(max-width:600px){.hero-line{--drift-x:3px}.hero-line.indent{--drift-x:-3px}}
-@media(prefers-reduced-motion:reduce){.fragment,.hero-line{animation:none!important;transform:none!important}}
+@media(max-width:600px){
+ .fragment,.hero-line:not(.indent),.hero-drift{--drift-x:3px}
+ .fragment:nth-child(2n),.hero-your{--drift-x:-3px}
+}
+@media(prefers-reduced-motion:reduce){.fragment,.hero-line,.hero-drift{animation:none!important;transform:none!important}}
 
 
 
