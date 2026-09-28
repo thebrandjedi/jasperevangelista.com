@@ -226,3 +226,30 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 .library-book-row .book-links>a{position:relative;z-index:6;pointer-events:auto!important;cursor:pointer;isolation:isolate}
 .library-book-row .book-links>a:before{display:none!important}
 .library-book-row .book-links>a>*{pointer-events:none}
+
+/* Curiosity leads; the platforms are destinations within a wider inquiry. */
+.curiosity-section h2{max-width:1050px;font-size:clamp(3.2rem,7.6vw,7.2rem);line-height:.94}
+.curiosity-section .eyebrow:before{display:none}
+.curiosity-section .section-intro{max-width:620px}
+.curiosity-section .world-portals{border:0;margin-top:100px;display:grid;gap:100px}
+.curiosity-section .world-portal{border:0;overflow:visible;align-items:center;min-height:0;gap:5vw;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.curiosity-section .world-portal:nth-child(even){grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.curiosity-section .world-portal:hover{background:transparent}
+.curiosity-section .portal-scene{min-height:360px;transform:none}
+.curiosity-section .portal-copy{padding:24px 0;max-width:600px}
+.curiosity-section .portal-copy h3{font-size:clamp(2.2rem,3.8vw,4rem);line-height:1.04;letter-spacing:-.055em;font-weight:500;transform:none}
+.curiosity-section .portal-copy p{max-width:490px;font-size:1rem;line-height:1.7}
+.curiosity-section .doorway-link{align-self:flex-start;display:inline-block;padding:8px 0;text-decoration:none;border-bottom:1px solid var(--line);line-height:1.5;font-size:.76rem;transform:none}
+.curiosity-section .doorway-link:hover{border-color:var(--ink);transform:translateX(4px)}
+.curiosity-section .world-portal:nth-child(2){margin-left:6vw}
+.curiosity-section .world-portal:nth-child(3){margin-right:4vw}
+.curiosity-section .territory-close{margin-top:80px;justify-content:flex-end;border:0}
+@media(max-width:960px){
+ .curiosity-section h2{font-size:clamp(2.8rem,10vw,5.5rem)}
+ .curiosity-section .world-portals{margin-top:64px;gap:64px}
+ .curiosity-section .world-portal,.curiosity-section .world-portal:nth-child(even){grid-template-columns:minmax(0,1fr);gap:28px;margin:0}
+ .curiosity-section .portal-scene{min-height:280px}
+ .curiosity-section .portal-copy{padding:0;max-width:640px}
+ .curiosity-section .portal-copy h3{font-size:clamp(2.1rem,6.8vw,3.7rem)}
+ .curiosity-section .territory-close{margin-top:48px}
+}
