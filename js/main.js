@@ -31,9 +31,7 @@ function render(){
   if(canon){
     const r=canon.getBoundingClientRect(),h=innerHeight;
     const p=clamp((h*.72-r.top)/(Math.max(1,r.height-h*.25)));
-    const move=document.querySelector('.meaning-move');
     const drift=document.querySelector('.meaning-drift');
-    if(move)move.style.transform=`translate3d(${p*22}px,0,0)`;
     if(drift)drift.style.transform=`translate3d(${p*48}px,${p*2}px,0)`;
     const separation=Math.sin(Math.min(1,p)*Math.PI)*38;
     document.querySelectorAll('.fragment-pair').forEach((row,i)=>{
