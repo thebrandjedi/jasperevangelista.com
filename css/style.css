@@ -266,3 +266,6 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 /* Review refinements: a pause between the two closing thoughts. */
 .illumination strong>span{display:block}
 .illumination strong>span+span{margin-top:.85em}
+
+/* The expanded statement must remain fully reachable on shorter screens. */
+.canon .split>div:first-child{position:relative;top:auto}
