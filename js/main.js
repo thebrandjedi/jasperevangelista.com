@@ -15,15 +15,6 @@ function render(){
   raf=0;
   nav?.classList.toggle('scrolled',scrollY>18);
   if(reduce.matches)return;
-  const canon=document.querySelector('#canon');
-  if(canon){
-    const r=canon.getBoundingClientRect(),h=innerHeight;
-    const p=clamp((h*.72-r.top)/(Math.max(1,r.height-h*.25)));
-    const drift=document.querySelector('.meaning-drift');
-    if(drift)drift.style.transform=`translate3d(${p*48}px,${p*2}px,0)`;
-
-  }
-
   const jasper=document.querySelector('#jasper');
   if(jasper){
     const beats=[...jasper.querySelectorAll('.split>div:last-child>.big-copy,.split>div:last-child>.copy,.experience-line')];
@@ -99,7 +90,8 @@ reduce.addEventListener('change',reset);
 document.body.classList.add('is-ready');
 reset();
 
-// Enter once, drift with time, and return to the origin only after leaving.
+// Visibility only gates playback; CSS owns elapsed-time drift and its transforms.
+// Leaving pauses each animation so re-entry never snaps it back to the origin.
 const driftSection=document.querySelector('#canon');
 if(driftSection){
   if('IntersectionObserver' in window){

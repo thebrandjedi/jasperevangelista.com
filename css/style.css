@@ -269,10 +269,34 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 /* The expanded statement must remain fully reachable on shorter screens. */
 .canon .split>div:first-child{position:relative;top:auto}
 
-/* A single gentle rightward pass, independent of scroll speed or direction. */
-.canon.drift-in-view .fragment-pair span:last-child{animation:row-drift 18s ease-in-out both}
-@keyframes row-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(12px,0,0)}}
-@media(max-width:600px){
- @keyframes row-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(6px,0,0)}}
+/* Time drives these independent rightward drifts; scrolling only gates playback.
+   Each pass settles at its own offset without looping or snapping backward. */
+.canon .meaning-drift,
+.canon .fragment-pair span:last-child{
+ --drift-distance:48px;
+ --drift-duration:64s;
+ animation:canon-time-drift var(--drift-duration) linear both paused;
 }
-@media(prefers-reduced-motion:reduce){.canon .fragment-pair span:last-child{animation:none!important;transform:none!important}}
+.canon .fragment-pair:nth-child(1) span:last-child{--drift-distance:36px;--drift-duration:60s}
+.canon .fragment-pair:nth-child(2) span:last-child{--drift-distance:64px;--drift-duration:48s}
+.canon .fragment-pair:nth-child(3) span:last-child{--drift-distance:24px;--drift-duration:80s}
+.canon .fragment-pair:nth-child(4) span:last-child{--drift-distance:48px;--drift-duration:56s}
+.canon.drift-in-view .meaning-drift,
+.canon.drift-in-view .fragment-pair span:last-child{animation-play-state:running}
+/* Reserve travel space so long phrases remain readable on narrow screens. */
+.canon .fragment-lines{padding-right:clamp(32px,5vw,64px)}
+@keyframes canon-time-drift{
+ from{transform:translate3d(0,0,0)}
+ to{transform:translate3d(var(--drift-distance),0,0)}
+}
+@media(max-width:600px){
+ .canon .meaning-drift{--drift-distance:24px}
+ .canon .fragment-pair:nth-child(1) span:last-child{--drift-distance:18px}
+ .canon .fragment-pair:nth-child(2) span:last-child{--drift-distance:32px}
+ .canon .fragment-pair:nth-child(3) span:last-child{--drift-distance:12px}
+ .canon .fragment-pair:nth-child(4) span:last-child{--drift-distance:24px}
+}
+@media(prefers-reduced-motion:reduce){
+ .canon .meaning-drift,
+ .canon .fragment-pair span:last-child{animation:none!important;transform:none!important}
+}
