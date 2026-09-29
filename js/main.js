@@ -93,19 +93,30 @@ reset();
 // Visibility only gates playback; CSS owns elapsed-time drift and its transforms.
 // Leaving pauses each animation so re-entry never snaps it back to the origin.
 const driftSection=document.querySelector('#canon');
-if(driftSection){
-  if('IntersectionObserver' in window){
-    const driftObserver=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>entry.target.classList.toggle('drift-in-view',entry.isIntersecting));
-    },{threshold:0,rootMargin:'-64px 0px 0px 0px'});
-    driftObserver.observe(driftSection);
-  }else{
-    const syncDriftVisibility=()=>{
-      const bounds=driftSection.getBoundingClientRect();
-      driftSection.classList.toggle('drift-in-view',bounds.bottom>64&&bounds.top<innerHeight);
-    };
-    addEventListener('scroll',syncDriftVisibility,{passive:true});
-    addEventListener('resize',syncDriftVisibility,{passive:true});
-    syncDriftVisibility();
+const driftPhrases=driftSection?.querySelector('.fragment-lines');
+if(driftPhrases){
+  // Shuffle a balanced set once per page load: both directions, no mid-read jumps.
+  const directions=[-1,-1,1,1];
+  for(let i=directions.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [directions[i],directions[j]]=[directions[j],directions[i]];
   }
+  driftPhrases.querySelectorAll('.fragment-pair span:last-child').forEach((phrase,i)=>{
+    phrase.style.setProperty('--drift-direction',directions[i]);
+  });
+}
+const driftTargets=[driftSection,driftPhrases].filter(Boolean);
+if('IntersectionObserver' in window){
+  const driftObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>entry.target.classList.toggle('drift-in-view',entry.isIntersecting));
+  },{threshold:0,rootMargin:'-64px 0px 0px 0px'});
+  driftTargets.forEach(target=>driftObserver.observe(target));
+}else{
+  const syncDriftVisibility=()=>driftTargets.forEach(target=>{
+    const bounds=target.getBoundingClientRect();
+    target.classList.toggle('drift-in-view',bounds.bottom>64&&bounds.top<innerHeight);
+  });
+  addEventListener('scroll',syncDriftVisibility,{passive:true});
+  addEventListener('resize',syncDriftVisibility,{passive:true});
+  syncDriftVisibility();
 }

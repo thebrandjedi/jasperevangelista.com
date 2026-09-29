@@ -25,7 +25,7 @@
 .portal-scene .orbit-one{animation:orbit-breathe-one 24s ease-in-out -6s infinite}
 .portal-scene .orbit-two{animation:orbit-breathe-two 30s ease-in-out -9s infinite}
 .portal-scene .scene-sun{animation:sun-drift 18s ease-in-out -4.5s infinite}
-.portal-scene .scene-horizon{animation:horizon-drift 24s ease-in-out -6s infinite}
+.portal-scene .scene-horizon{animation:horizon-drift 12s ease-in-out -3s infinite}
 .portal-scene .scene-grid,.portal-scene .scene-orbit,.portal-scene .scene-sun,.portal-scene .scene-horizon{animation-play-state:paused}
 .portal-scene.is-active .scene-grid,.portal-scene.is-active .scene-orbit,.portal-scene.is-active .scene-sun,.portal-scene.is-active .scene-horizon{animation-play-state:running}
 .scene-orbit{opacity:.85}.scene-sun{opacity:.78}
@@ -104,11 +104,11 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 .worlds-section h2>span{display:inline-block;will-change:transform}
 .world-portals{position:relative}
 .portal-scene{will-change:transform}
-.portal-brand .scene-grid{animation:grid-glide 24s linear infinite}
-.portal-tech .orbit-one{animation:orbit-breathe-one 120s ease-in-out -30s infinite}
-.portal-tech .orbit-two{animation:orbit-breathe-two 120s ease-in-out -60s infinite}
-.portal-self .scene-sun{animation:sun-drift 24s ease-in-out -6s infinite}
-.portal-self .scene-horizon{animation:horizon-drift 24s ease-in-out -6s infinite}
+.portal-brand .scene-grid{animation:grid-glide 12s linear infinite}
+.portal-tech .orbit-one{animation:orbit-breathe-one 60s ease-in-out -15s infinite}
+.portal-tech .orbit-two{animation:orbit-breathe-two 60s ease-in-out -30s infinite}
+.portal-self .scene-sun{animation:sun-drift 12s ease-in-out -3s infinite}
+.portal-self .scene-horizon{animation:horizon-drift 12s ease-in-out -3s infinite}
 .world-portal{transition:background .55s ease}
 .world-portal:hover{background:rgba(255,255,255,.16)}
 .stance-section h2,.stance-section .eyebrow,.stance-section .big-copy,.stance-section .copy,.stance-section .illumination{transform:none!important}
@@ -119,7 +119,7 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
   .portal-copy{padding-top:72px;padding-bottom:72px}
 }
 @media(max-width:960px){
-  .fragment-pair{grid-template-columns:.9fr 1.35fr;gap:16px}
+  .fragment-pair{grid-template-columns:minmax(0,.9fr) minmax(0,1.35fr);gap:16px}
 }
 @media(prefers-reduced-motion:reduce){
   .hero-inner,.meaning-move,.meaning-drift,.fragment-pair span,.worlds-section h2>span{transform:none!important;opacity:1!important}
@@ -127,10 +127,10 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 
 
 /* Shared pace: the opening word sets the rhythm; Zero remains anchored. */
-.fragment,.hero-line:not(.indent),.hero-drift{--drift-x:6px;animation:hero-horizontal 36s ease-in-out -9s infinite;will-change:transform}
+.fragment,.hero-line:not(.indent),.hero-drift{--drift-x:6px;animation:hero-horizontal 24s ease-in-out -6s infinite;will-change:transform}
 .fragment:nth-child(2n),.hero-your{--drift-x:-6px}
-.fragment:nth-child(3n){animation-delay:-12s}
-.fragment:nth-child(4n){animation-delay:-6s}
+.fragment:nth-child(3n){animation-delay:-8s}
+.fragment:nth-child(4n){animation-delay:-4s}
 .hero-line.indent{animation:none;transform:none;will-change:auto}
 .hero-drift{display:inline-block}
 .hero-zero{display:inline-block}
@@ -269,25 +269,25 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 /* The expanded statement must remain fully reachable on shorter screens. */
 .canon .split>div:first-child{position:relative;top:auto}
 
-/* Time drives these independent rightward drifts; scrolling only gates playback.
+/* Time drives these independent drifts; scrolling only gates playback.
    Each pass settles at its own offset without looping or snapping backward. */
 .canon .meaning-drift,
 .canon .fragment-pair span:last-child{
  --drift-distance:48px;
- --drift-duration:64s;
+ --drift-duration:42.667s;
  animation:canon-time-drift var(--drift-duration) linear both paused;
 }
-.canon .fragment-pair:nth-child(1) span:last-child{--drift-distance:36px;--drift-duration:60s}
-.canon .fragment-pair:nth-child(2) span:last-child{--drift-distance:64px;--drift-duration:48s}
-.canon .fragment-pair:nth-child(3) span:last-child{--drift-distance:24px;--drift-duration:80s}
-.canon .fragment-pair:nth-child(4) span:last-child{--drift-distance:48px;--drift-duration:56s}
+.canon .fragment-pair:nth-child(1) span:last-child{--drift-distance:36px;--drift-duration:40s}
+.canon .fragment-pair:nth-child(2) span:last-child{--drift-distance:64px;--drift-duration:32s}
+.canon .fragment-pair:nth-child(3) span:last-child{--drift-distance:24px;--drift-duration:53.333s}
+.canon .fragment-pair:nth-child(4) span:last-child{--drift-distance:48px;--drift-duration:37.333s}
 .canon.drift-in-view .meaning-drift,
-.canon.drift-in-view .fragment-pair span:last-child{animation-play-state:running}
+.canon .fragment-lines.drift-in-view .fragment-pair span:last-child{animation-play-state:running}
 /* Reserve travel space so long phrases remain readable on narrow screens. */
 .canon .fragment-lines{padding-right:clamp(32px,5vw,64px)}
 @keyframes canon-time-drift{
  from{transform:translate3d(0,0,0)}
- to{transform:translate3d(var(--drift-distance),0,0)}
+ to{transform:translate3d(calc(var(--drift-distance) * var(--drift-direction,1)),0,0)}
 }
 @media(max-width:600px){
  .canon .meaning-drift{--drift-distance:24px}
@@ -299,4 +299,16 @@ a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 @media(prefers-reduced-motion:reduce){
  .canon .meaning-drift,
  .canon .fragment-pair span:last-child{animation:none!important;transform:none!important}
+}
+
+/* Let the aligned starting column register before the phrases disperse. */
+.canon .fragment-pair{column-gap:clamp(40px,6vw,72px)}
+.canon .fragment-pair span:last-child{animation-delay:1.2s;text-align:left}
+/* Give the large headline a longer, more apparent journey at 1.5x its old speed. */
+.canon .meaning-drift{--drift-distance:64px;--drift-duration:56.889s}
+@media(max-width:600px){.canon .meaning-drift{--drift-distance:32px}}
+
+@media(max-width:600px){
+ .canon .fragment-pair{grid-template-columns:minmax(0,1fr);gap:6px}
+ .canon .fragment-pair span:last-child{margin-left:32px}
 }
