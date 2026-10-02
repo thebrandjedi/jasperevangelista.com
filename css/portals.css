@@ -1,0 +1,62 @@
+/* Ambient portal studies. All geometry stays inside the existing scene boxes. */
+.world-portal .portal-scene{background:radial-gradient(ellipse at 52% 44%,#242424 0,#171717 52%,#101010 100%)}
+.portal-art{position:absolute;inset:0;width:100%;height:100%;color:#e5e2db}
+.portal-art path,.portal-art rect{vector-effect:non-scaling-stroke}
+
+/* Five independent planes resolve into one quiet editorial composition. */
+.alignment-fragment{stroke:currentColor;stroke-width:1;fill:currentColor;fill-opacity:.025;opacity:.55;transform-box:fill-box;transform-origin:center;animation:portal-align 18s cubic-bezier(.45,0,.3,1) infinite}
+.fragment-1{--x:-22px;--y:-13px;--r:-7deg}
+.fragment-2{--x:18px;--y:-8px;--r:5deg;animation-delay:-.45s}
+.fragment-3{--x:-15px;--y:18px;--r:6deg;animation-delay:-.2s}
+.fragment-4{--x:22px;--y:8px;--r:-4deg;animation-delay:-.6s}
+.fragment-5{--x:7px;--y:23px;--r:4deg;animation-delay:-.3s}
+@keyframes portal-align{
+  0%,100%{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:.42}
+  44%,62%{transform:translate(0,0) rotate(0);opacity:.76}
+}
+
+/* A single organic disturbance passes across an otherwise ordered dot field. */
+.signal-column{fill:currentColor;opacity:.25;animation:portal-signal-field 16s ease-in-out var(--signal-delay) infinite}
+.signal-trace{stroke:currentColor;stroke-width:.8;opacity:.1}
+.signal-pulse{stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:24 100;stroke-dashoffset:24;opacity:0;animation:portal-signal-travel 16s linear -8s infinite}
+@keyframes portal-signal-field{
+  0%,7%,50%,100%{transform:translateY(0);opacity:.25}
+  19%{transform:translateY(var(--signal-shift));opacity:.55}
+  31%{transform:translateY(0);opacity:.3}
+}
+@keyframes portal-signal-travel{
+  0%{stroke-dashoffset:24;opacity:0}
+  10%{opacity:.75}
+  70%{opacity:.75}
+  82%,100%{stroke-dashoffset:-100;opacity:0}
+}
+
+/* A measured approach, a pause at the choice, then a new direction. */
+.trajectory-guide{stroke:currentColor;stroke-width:.8;opacity:.12}
+.trajectory-line{stroke:currentColor;stroke-width:1.25;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:0;animation:portal-trajectory 20s linear infinite}
+.trajectory-pivot{fill:#171717;stroke:currentColor;stroke-width:1;opacity:.5;animation:portal-pivot 20s ease-in-out infinite}
+.trajectory-origin{fill:currentColor;opacity:.45}
+@keyframes portal-trajectory{
+  0%{stroke-dashoffset:100;opacity:0}
+  6%{stroke-dashoffset:100;opacity:.8}
+  34%,42%{stroke-dashoffset:61;opacity:.8}
+  76%,86%{stroke-dashoffset:0;opacity:.8}
+  96%,100%{stroke-dashoffset:0;opacity:0}
+}
+@keyframes portal-pivot{
+  0%,25%,96%,100%{opacity:.18}
+  34%,46%{opacity:.85}
+  76%,86%{opacity:.4}
+}
+
+/* The existing observer pauses elapsed time offscreen and in hidden tabs. */
+.portal-scene .portal-art *{animation-play-state:paused}
+.portal-scene.is-active .portal-art *{animation-play-state:running}
+@media(prefers-reduced-motion:reduce){
+  .portal-scene .portal-art *{animation:none!important}
+  .alignment-fragment{transform:none;opacity:.65}
+  .signal-column{transform:none}
+  .signal-trace{opacity:.55}
+  .signal-pulse{opacity:0}
+  .trajectory-line{stroke-dashoffset:0;opacity:.7}
+}

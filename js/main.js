@@ -76,6 +76,10 @@ if('IntersectionObserver'in window){
 }else scenes.forEach(s=>s.classList.add('is-active'));
 
 function reset(){
+  scenes.forEach(scene=>{
+    const bounds=scene.getBoundingClientRect();
+    scene.classList.toggle('is-active',!reduce.matches&&!document.hidden&&bounds.bottom>0&&bounds.top<innerHeight);
+  });
   document.body.classList.toggle('motion-enabled',!reduce.matches);
   if(reduce.matches){
     document.querySelectorAll('.fragment,.meaning-move,.meaning-drift,.fragment-pair span,#worlds h2>span,.hero-inner,.range-lines span,.operating-code span,.closing h2,.closing .operating-close').forEach(el=>{el.style.transform='';el.style.opacity='';});
